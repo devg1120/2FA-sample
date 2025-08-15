@@ -1,0 +1,38 @@
+import { redirect } from "@sveltejs/kit";
+import { getPasswordReset2FARedirect } from "$lib/server/2fa";
+import { getUserPasskeyCredentials } from "$lib/server/webauthn";
+import { validatePasswordResetSessionRequest } from "$lib/server/password-reset";
+
+import type { RequestEvent } from "@sveltejs/kit";
+
+export async function load(event: RequestEvent) {
+	const { session, user } = await validatePasswordResetSessionRequest(event);
+
+	if (session === null) {
+		return redirect(302, "/forgot-password");
+	}
+	if (!session.emailVerified) {
+		return redirect(302, "/reset-password/verify-email");
+	}
+	if (!user.registered2FA) {
+		return redirect(302, "/reset-password");
+	}
+	if (session.twoFactorVerified) {
+		return redirect(302, "/reset-password");
+	}
+	if (!user.registeredPasskey) {
+		return redirect(302, getPasswordReset2FARedirect(user));
+	}
+	const dbCredentials = await getUserPasskeyCredentials(user.id);
+
+	const credentials = dbCredentials.map((credential) => ({
+		...credential,
+		id: new Uint8Array(credential.id),
+		publicKey: new Uint8Array(credential.publicKey),
+	}));
+
+	return {
+		user,
+		credentials
+	};
+}

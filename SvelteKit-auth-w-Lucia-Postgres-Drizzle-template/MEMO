@@ -1,0 +1,12 @@
+
+
+cp .env.example  .env
+docker compose up -d
+docker ps
+yarn
+npm run db:push
+npm run dev
+
+
+open http://127.0.0.1:3000/
+

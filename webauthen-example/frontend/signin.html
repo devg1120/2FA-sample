@@ -1,0 +1,64 @@
+<form>
+  <label for="username">ユーザー名</label>
+  <input
+    type="text"
+    id="username"
+    name="username"
+    required
+    autocomplete="username webauthn"
+  />
+
+  <button type="submit">ログイン</button>
+</form>
+
+<script>
+  async function getAuthenticationOptions(username) {
+    const response = await fetch(`http://localhost:3000/signin-request`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    return await response.json();
+  }
+
+  async function isCMA() {
+    if (
+      typeof window.PublicKeyCredential !== "undefined" &&
+      typeof window.PublicKeyCredential.isConditionalMediationAvailable ===
+        "function"
+    ) {
+      const available =
+        await PublicKeyCredential.isConditionalMediationAvailable();
+      return available;
+    }
+  }
+
+  (async () => {
+    const available = await isCMA();
+
+    if (available) {
+      try {
+        const options = await getAuthenticationOptions();
+        const webAuthnResponse = await navigator.credentials.get({
+          mediation: "conditional",
+          publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(options),
+        });
+
+        const res = await fetch("http://localhost:3000/signin-response", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(webAuthnResponse),
+        });
+        const result = await res.json();
+        alert("ログイン成功");
+      } catch (err) {
+        console.error("Error with conditional UI:", err);
+      }
+    }
+  })();
+</script>
