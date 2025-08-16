@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Passkey Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 30px; }
+    nav { background: #0077cc; padding: 10px; color: white; }
+    nav a { color: white; margin: 0 10px; text-decoration: none; font-weight: bold; }
+    h2 { margin-top: 20px; }
+    button { background: #0077cc; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #005fa3; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="register.html">Register</a>
+    <a href="login.html">Login</a>
+    <a href="manage-passkeys.html">Manage Passkeys</a>
+  </nav>
+
+  <h2>Login with Your Passkey</h2>
+  <p>Click below to authenticate using your registered passkey.</p>
+  <button id="loginBtn">🔑 Login with Passkey</button>
+
+  <!-- ✅ Load script after DOM is ready -->
+  <script src="js/login.js"></script>
+</body>
+</html>

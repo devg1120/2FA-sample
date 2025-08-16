@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Passkeys - Passkey Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f6f9; text-align: center; padding: 40px; }
+    h1 { color: #2e7d32; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border-bottom: 1px solid #ddd; }
+    button { background: #c62828; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #b71c1c; }
+    .back { background: #2e7d32; margin-top: 20px; }
+    .back:hover { background: #1b5e20; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔑 Manage Passkeys</h1>
+    <p id="userDisplay"></p>
+    
+    <table id="keysTable">
+      <thead>
+        <tr>
+          <th>Credential ID</th>
+          <th>Device Type</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <button class="back" onclick="goBack()">⬅️ Back to Dashboard</button>
+  </div>
+
+  <script src="/js/manage-passkeys.js"></script>
+</body>
+</html>
